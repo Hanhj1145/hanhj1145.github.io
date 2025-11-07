@@ -1,0 +1,32 @@
+name: 自动部署Fuwari到GitHub Pages
+
+on:
+  push:
+    branches: [ main ]  # 推送到main分支时触发
+  workflow_dispatch:  # 支持手动触发（方便测试）
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 拉取代码
+        uses: actions/checkout@v4  # 拉取仓库代码
+
+      - name: 安装Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'  # Fuwari推荐的Node版本（>=18）
+          cache: 'npm'  # 缓存npm依赖，加速构建
+
+      - name: 安装依赖
+        run: npm install  # Fuwari的依赖通过npm管理，这一步会安装Astro及其他依赖
+
+      - name: 构建静态文件
+        run: npm run build  # Fuwari的构建命令（Astro默认输出到dist目录）
+
+      - name: 部署到GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}  # GitHub自动生成的令牌，无需手动配置
+          publish_dir: ./dist  # Fuwari构建后的静态文件目录（Astro默认输出到dist）
+          force_orphan: true  # 避免历史提交占用空间，可选但推荐
