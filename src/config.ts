@@ -27,14 +27,14 @@ export const siteConfig: SiteConfig = {
 	},
 	toc: {
 		enable: true, // 在文章右侧显示目录（Table of Contents）
-		depth: 3, // 目录显示的最大标题深度，范围 1 到 3
+		depth: 2, // 目录显示的最大标题深度，范围 1 到 3
 	},
 	favicon: [
 		// 保持此数组为空以使用默认 favicon
 		{
-			src: "assets/images/favicon/favicon.png", // favicon 的路径，相对于 /src 目录。如果以 '/' 开头，则相对于 /public 目录
-			theme: "light", // （可选）'light' 或 'dark'，当浅色/深色模式使用不同 favicon 时设置
-			sizes: "32x32", // （可选）favicon 的尺寸，当有不同尺寸时设置
+			src: "/favicon/favicon.png", // favicon 的路径，相对于 /src 目录。如果以 '/' 开头，则相对于 /public 目录
+			// theme: "light", // （可选）'light' 或 'dark'，当浅色/深色模式使用不同 favicon 时设置
+			// sizes: "32x32", // （可选）favicon 的尺寸，当有不同尺寸时设置
 		},
 	],
 };
@@ -93,7 +93,7 @@ export const licenseConfig: LicenseConfig = {
 };
 
 export const expressiveCodeConfig: ExpressiveCodeConfig = {
-	// 注意：某些样式（例如背景色）会被覆盖，详见 astro.config.mjs 文件。
+	// 注意：某些样式（例如背景色）会被覆盖，详见astro.config.mjs  文件。
 	// 请使用暗色主题，因为本博客主题当前仅支持暗色背景
 	theme: "github-dark",
 };
