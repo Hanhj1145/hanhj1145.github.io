@@ -10,6 +10,11 @@ A static blog template built with [Astro](https://astro.build).
 [**中文**](https://github.com/saicaca/fuwari/blob/main/docs/README.zh-CN.md) /
 
 # 博客开发TODO
+## MD
+[Markdown 扩展功能与格式](https://desuki.me/posts/markdown-extended/)
+
+##
+
 
 ## pnpm
 启动开发服务器:
