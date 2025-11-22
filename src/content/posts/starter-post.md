@@ -1,9 +1,10 @@
 ---
-title: My First Blog Post
+title: 测试博客篇1 My First Blog Post 1#
 published: 2025-11-08
-description: This is the first post of my new Astro blog.
-tags: [fuwari]
+description: This is the first post of my new Astro blog. This is used to test.
+tags: [fuwari,technology]
 category: setting
+series: "改造博客"
 draft: false
 ---
 

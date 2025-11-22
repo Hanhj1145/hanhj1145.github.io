@@ -37,21 +37,8 @@ export default defineConfig({
 	// 配置 HTTP 响应头，控制缓存
 	server: {
 		headers: {
-			// HTML 文件：不缓存，每次都请求最新内容
-			"/*.html": [
-				{ key: "Cache-Control", value: "no-cache, no-store, must-revalidate" },
-			],
-			// 静态资源（CSS、JS、图片等）：缓存 1 天（可根据需求调整）
-			"/*.css": [
-				{ key: "Cache-Control", value: "public, max-age=86400, immutable" },
-			],
-			"/*.js": [
-				{ key: "Cache-Control", value: "public, max-age=86400, immutable" },
-			],
-			"/*.png": [
-				{ key: "Cache-Control", value: "public, max-age=86400, immutable" },
-			],
-			// 其他格式的图片/资源同理
+			// 注意：dev server 不支持文件扩展 glob 模式如 "/*.css"，已临时移除以消除错误
+			// 可移至 build.headers 或使用路径模式如 "/assets/*"
 		},
 	},
 	integrations: [
@@ -63,7 +50,7 @@ export default defineConfig({
 			animationClass: "transition-swup-", // see https://swup.js.org/options/#animationselector
 			// the default value `transition-` cause transition delay
 			// when the Tailwind class `transition-all` is used
-			containers: ["main", "#toc"],
+			containers: ["main", "#toc", "#series"],
 			smoothScrolling: true,
 			cache: true,
 			preload: true,
