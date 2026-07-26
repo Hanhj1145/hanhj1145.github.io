@@ -26,6 +26,12 @@ package-lock.json
 bun.lockb
 yarn.lock
 
+# accidentally committed binary
+npm
+
+# superpowers design docs (local only)
+docs/
+
 # ide
 .idea
 *.iml
