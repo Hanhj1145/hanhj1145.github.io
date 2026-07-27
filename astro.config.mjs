@@ -21,7 +21,9 @@ import { pluginLanguageBadge } from "./src/plugins/expressive-code/language-badg
 import { AdmonitionComponent } from "./src/plugins/rehype-component-admonition.mjs";
 import { GithubCardComponent } from "./src/plugins/rehype-component-github-card.mjs";
 import { parseDirectiveNode } from "./src/plugins/remark-directive-rehype.js";
+import { rehypeInlineToc } from "./src/plugins/rehype-inline-toc.js";
 import { remarkExcerpt } from "./src/plugins/remark-excerpt.js";
+import { remarkInlineToc } from "./src/plugins/remark-inline-toc.js";
 import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs";
 
 // https://astro.build/config
@@ -120,6 +122,7 @@ export default defineConfig({
 			remarkMath,
 			remarkReadingTime,
 			remarkExcerpt,
+			remarkInlineToc,
 			remarkGithubAdmonitionsToDirectives,
 			remarkDirective,
 			remarkSectionize,
@@ -164,6 +167,7 @@ export default defineConfig({
 					},
 				},
 			],
+			rehypeInlineToc,
 		],
 	},
 	vite: {

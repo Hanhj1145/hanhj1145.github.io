@@ -5,6 +5,9 @@ module.exports = {
 	darkMode: "class", // allows toggling dark mode manually
 	theme: {
 		extend: {
+			screens: {
+				"1.5xl": "1500px",
+			},
 			fontFamily: {
 				sans: ["LXGWWenKai", "sans-serif", ...defaultTheme.fontFamily.sans],
 			},

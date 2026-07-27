@@ -1,3 +1,29 @@
+.inline-toc {
+    @apply my-6 p-5 rounded-xl border border-[var(--line-divider)] bg-[var(--card-bg)];
+}
+
+.inline-toc-title {
+    @apply text-base font-bold mb-3 text-[var(--primary)];
+}
+
+.inline-toc-list {
+    @apply list-none p-0 m-0;
+}
+
+.inline-toc-item {
+    @apply my-1;
+    &::marker {
+        content: none;
+    }
+}
+
+.inline-toc-link {
+    @apply block text-sm text-[var(--btn-content)] no-underline rounded-lg py-1.5 pr-3 transition-colors;
+    &:hover {
+        @apply text-[var(--primary)] bg-[var(--btn-regular-bg-hover)];
+    }
+}
+
 .custom-md {
     h1 {
         @apply text-3xl;
