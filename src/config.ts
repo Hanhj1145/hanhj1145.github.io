@@ -24,6 +24,7 @@ export const siteConfig: SiteConfig = {
 			text: "", // 要显示的署名文字
 			url: "", // （可选）指向原始作品或作者页面的链接
 		},
+		heroText: "日拱一卒 功不唐捐", // 主页 banner 上的"一言"
 	},
 	toc: {
 		enable: true, // 在文章右侧显示目录（Table of Contents）

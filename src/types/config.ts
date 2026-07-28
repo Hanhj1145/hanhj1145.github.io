@@ -29,6 +29,7 @@ export type SiteConfig = {
 			text: string;
 			url?: string;
 		};
+		heroText?: string;
 	};
 	toc: {
 		enable: boolean;
