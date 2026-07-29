@@ -6,6 +6,7 @@ tags: [fuwari,technology]
 category: setting
 series: "改造博客"
 draft: false
+aiLevel: none
 ---
 
 # hi！总算与这个世界见面了哦

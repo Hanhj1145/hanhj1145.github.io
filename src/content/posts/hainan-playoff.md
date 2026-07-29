@@ -7,6 +7,7 @@ tags: [FRC, 机器人, STEM, 游记]
 category: FRC
 draft: false
 lang: zh_CN
+aiLevel: partial
 ---
 
 > **导语**

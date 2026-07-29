@@ -13,6 +13,7 @@ interface Props {
 	category: string | null;
 	hideTagsForMobile?: boolean;
 	hideUpdateDate?: boolean;
+	aiLevel?: "none" | "partial" | "full";
 }
 const {
 	published,
@@ -21,8 +22,15 @@ const {
 	category,
 	hideTagsForMobile = false,
 	hideUpdateDate = false,
+	aiLevel,
 } = Astro.props;
 const className = Astro.props.class;
+
+const aiLevelMap: Record<string, I18nKey> = {
+	none: I18nKey.noAI,
+	partial: I18nKey.partialAI,
+	full: I18nKey.fullAI,
+};
 ---
 
 <div class:list={["flex flex-wrap text-neutral-500 dark:text-neutral-400 items-center gap-4 gap-x-4 gap-y-2", className]}>
@@ -79,4 +87,23 @@ const className = Astro.props.class;
             {!(tags && tags.length > 0) && <div class="transition text-50 text-sm font-medium">{i18n(I18nKey.noTags)}</div>}
         </div>
     </div>
+
+    <!-- AI level -->
+    {aiLevel && (
+      <div class="flex items-center ml-auto">
+        <div class="meta-icon">
+          <Icon name="material-symbols:smart-toy-outline-rounded" class="text-xl"></Icon>
+        </div>
+        <span class:list={[
+          "text-sm font-medium px-2.5 py-0.5 rounded-md transition",
+          {
+            "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400": aiLevel === "none",
+            "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400": aiLevel === "partial",
+            "bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-400": aiLevel === "full",
+          }
+        ]}>
+          {i18n(aiLevelMap[aiLevel])}
+        </span>
+      </div>
+    )}
 </div>
