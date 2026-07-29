@@ -14,6 +14,7 @@ import {
 	BANNER_HEIGHT_HOME,
 	MAIN_PANEL_OVERLAPS_BANNER_HEIGHT,
 } from "../constants/constants";
+import { pathsEqual, url } from "../utils/url-utils";
 import Layout from "./Layout.astro";
 
 interface Props {
@@ -35,6 +36,7 @@ const {
 	series,
 	headings = [],
 } = Astro.props;
+const isHomePage = pathsEqual(Astro.url.pathname, url("/"));
 const hasBannerCredit =
 	siteConfig.banner.enable && siteConfig.banner.credit.enable;
 const hasBannerLink = !!siteConfig.banner.credit.url;
@@ -60,16 +62,40 @@ const mainPanelTop = siteConfig.banner.enable
                   src={siteConfig.banner.src} position={siteConfig.banner.position}
     >
     </ImageWrapper>
+    <!-- Dark gradient overlay -->
+    <div class="absolute inset-0 pointer-events-none" style="background: linear-gradient(transparent 30%, rgba(0,0,0,0.45) 100%)"></div>
 </div>}
 
-<!-- Banner hero text (outside banner-wrapper for proper stacking) -->
-{siteConfig.banner.enable && siteConfig.banner.heroText && (
-    <div id="banner-hero-text" class="absolute z-20 w-full flex items-center justify-center pointer-events-none" style={`top: calc(${BANNER_HEIGHT}vh / 2 - 1.5rem)`}>
-        <h1 class="text-white text-3xl md:text-5xl font-bold tracking-wide drop-shadow-lg">
-            {siteConfig.banner.heroText}
-        </h1>
+<!-- Banner hero text -->
+{siteConfig.banner.enable && isHomePage && siteConfig.banner.heroText && siteConfig.banner.heroText.length > 0 && (
+    <div id="banner-hero-text" class="absolute z-20 w-full pointer-events-none" style={`top: calc(${BANNER_HEIGHT}vh * 0.55)`}>
+        <div class="max-w-[var(--page-width)] mx-auto px-4">
+            <h1 id="hero-text-rotator" class="relative w-full text-center text-white text-2xl md:text-4xl font-bold tracking-wide drop-shadow-lg">
+                {siteConfig.banner.heroText.map((text, i) => (
+                    <span class="hero-text-item opacity-0 absolute inset-0">{text}</span>
+                ))}
+            </h1>
+        </div>
     </div>
 )}
+<script is:inline>
+(function() {
+    if (window.__heroRotatorRunning) return;
+    window.__heroRotatorRunning = true;
+    const items = document.querySelectorAll('.hero-text-item');
+    if (items.length <= 1) return;
+    let current = Math.floor(Math.random() * items.length);
+    items[current].classList.remove('opacity-0', 'absolute', 'inset-0');
+    items[current].classList.add('opacity-100', 'relative');
+    setInterval(() => {
+        items[current].classList.remove('opacity-100', 'relative');
+        items[current].classList.add('opacity-0', 'absolute', 'inset-0');
+        current = (current + 1) % items.length;
+        items[current].classList.remove('opacity-0', 'absolute', 'inset-0');
+        items[current].classList.add('opacity-100', 'relative');
+    }, 8000);
+})();
+</script>
 
 <!-- Main content -->
 <div class="absolute w-full z-30 pointer-events-none" style={`top: ${mainPanelTop}`}>
@@ -135,3 +161,9 @@ const mainPanelTop = siteConfig.banner.enable
     </div>
 </div>
 </Layout>
+
+<style>
+.hero-text-item {
+    transition: opacity 0.7s ease-in-out;
+}
+</style>
