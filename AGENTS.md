@@ -170,7 +170,7 @@ Misc
 ├── Navbar.astro             # 顶部导航栏
 ├── Footer.astro             # 页脚
 ├── PostCard.astro           # 文章卡片（列表项）
-├── PostMeta.astro           # 文章元信息（发布时间、标签、分类）
+├── PostMeta.astro           # 文章元信息（发布时间、标签、分类、AI参与度）
 ├── PostPage.astro           # 文章列表容器
 ├── ConfigCarrier.astro      # 配置数据传输脚本
 └── GlobalStyles.astro       # 全局样式注入
@@ -208,6 +208,7 @@ Misc
 | `lang` | `string` | 语言代码（如 `zh_CN`） |
 | `series` | `string?` | 所属系列名称 |
 | `prevTitle/prevSlug/nextTitle/nextSlug` | `string` | 前后文章链接（自动填充） |
+| `aiLevel` | `"none" \| "partial" \| "full"?` | AI 参与度标识（可选，不设不显示） |
 
 **spec** — 独立页面（`src/content/spec/`，如关于页），schema 默认无限制。
 
@@ -343,7 +344,15 @@ i18nKey.ts (枚举) → translation.ts (分发器) → languages/{en,zh_CN,zh_TW
 | `style:` | 代码风格（格式、空格等，非语义变更） |
 | `chore:` | 构建、依赖、CI 等杂项 |
 
-提交前执行：
+### 提交前检查清单
+
+```bash
+pnpm format        # Biome 格式化（CI 会检查，必须执行）
+pnpm lint          # Biome 代码风格（与 format 配合）
+pnpm check         # Astro 类型 + 模板检查
+pnpm build         # 完整构建验证（产出 dist/ + Pagefind 索引）
+```
+
 1. `git status` — 确认只包含预期文件
 2. `git diff --staged` — 审查变更内容
 3. 不要提交 secrets、大文件（>1MB）、`dist/`、`node_modules/`
@@ -353,3 +362,11 @@ i18nKey.ts (枚举) → translation.ts (分发器) → languages/{en,zh_CN,zh_TW
 ## VS Code
 
 推荐扩展：Biome（格式化）、Astro（语言服务）。保存时自动用 Biome 格式化。
+
+`.vscode/settings.json` 确保以下配置：
+```json
+{
+  "editor.defaultFormatter": "biomejs.biome",
+  "editor.formatOnSave": true
+}
+```
