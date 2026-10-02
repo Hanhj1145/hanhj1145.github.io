@@ -63,7 +63,11 @@ module.exports = {
 				"1.5xl": "1500px",
 			},
 			fontFamily: {
-				sans: ["LXGWWenKai", "sans-serif", ...defaultTheme.fontFamily.sans],
+				sans: [
+					'"LXGW WenKai Screen"',
+					"sans-serif",
+					...defaultTheme.fontFamily.sans,
+				],
 			},
 		},
 	},

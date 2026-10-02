@@ -1,0 +1,40 @@
+---
+import { giscusConfig } from "../../config";
+import I18nKey from "../../i18n/i18nKey";
+import { i18n } from "../../i18n/translation";
+
+interface Props {
+	class?: string;
+}
+
+const className = Astro.props.class;
+---
+
+{
+	giscusConfig.enable && (
+		<div class:list={["card-base z-10 px-6 md:px-9 py-6 relative w-full onload-animation", className]}>
+			<div class="text-lg font-bold mb-4 text-black/90 dark:text-white/90 flex items-center">
+				<div class="transition h-6 w-6 rounded-md bg-black/5 dark:bg-white/10 text-black/50 dark:text-white/50 flex items-center justify-center mr-2">
+					<svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+						<path d="M12 3C6.48 3 2 6.94 2 11.8c0 2.78 1.5 5.26 3.84 6.9-.13 1.02-.6 2.53-1.62 3.57 0 0 2.4-.3 4.2-1.5.98.24 2.02.37 3.08.37 5.52 0 10-3.94 10-8.8S17.52 3 12 3Z" />
+					</svg>
+				</div>
+				{i18n(I18nKey.comments)}
+			</div>
+			<div
+				id="giscus-container"
+				data-repo={giscusConfig.repo}
+				data-repo-id={giscusConfig.repoId}
+				data-category={giscusConfig.category}
+				data-category-id={giscusConfig.categoryId}
+				data-mapping={giscusConfig.mapping}
+				data-strict={giscusConfig.strict ? "1" : "0"}
+				data-reactions-enabled={giscusConfig.reactionsEnabled ? "1" : "0"}
+				data-emit-metadata={giscusConfig.emitMetadata ? "1" : "0"}
+				data-input-position={giscusConfig.inputPosition}
+				data-lang={giscusConfig.lang}
+				data-loading={giscusConfig.loading}
+			/>
+		</div>
+	)
+}

@@ -1,7 +1,4 @@
-@font-face {
-  font-family: 'LXGWWenKai';
-  src: url('/fonts/LXGWWenKaiScreen.ttf') format('truetype');
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-}
+/* 正文字体 LXGW WenKai Screen 通过 webfont 包提供（WOFF2 + unicode-range 分片），
+   在 src/layouts/Layout.astro 中引入：
+   import "lxgw-wenkai-screen-webfont/lxgwwenkaiscreen.css";
+   原先指向 24MB 的 LXGWWenKaiScreen.ttf 的 @font-face 已移除。 */

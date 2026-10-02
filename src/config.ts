@@ -1,5 +1,6 @@
 import type {
 	ExpressiveCodeConfig,
+	GiscusConfig,
 	LicenseConfig,
 	NavBarConfig,
 	ProfileConfig,
@@ -105,4 +106,25 @@ export const expressiveCodeConfig: ExpressiveCodeConfig = {
 	// 注意：某些样式（例如背景色）会被覆盖，详见astro.config.mjs  文件。
 	// 请使用暗色主题，因为本博客主题当前仅支持暗色背景
 	theme: "github-dark",
+};
+
+export const giscusConfig: GiscusConfig = {
+	// 基于 GitHub Discussions 的评论系统。
+	// 使用步骤：
+	//   1. 在仓库 Settings → General → Features 中勾选 Discussions
+	//   2. 安装 giscus App：https://github.com/apps/giscus
+	//   3. 打开 https://giscus.app ，填入仓库，复制生成的 repoId / categoryId
+	//   4. 填到下面并把 enable 改为 true
+	enable: false,
+	repo: "Hanhj1145/hanjh1145.github.io",
+	repoId: "",
+	category: "Announcements",
+	categoryId: "",
+	mapping: "pathname",
+	strict: false,
+	reactionsEnabled: true,
+	emitMetadata: false,
+	inputPosition: "top",
+	lang: "zh-CN",
+	loading: "lazy",
 };

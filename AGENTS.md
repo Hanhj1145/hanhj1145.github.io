@@ -14,12 +14,13 @@ pnpm check        # astro check（类型 + 模板检查）
 pnpm type-check   # tsc --noEmit --isolatedDeclarations
 pnpm format       # biome format --write ./src
 pnpm lint         # biome check --write ./src
+pnpm verify       # 一键复现 CI：biome ci ./src && pnpm check && pnpm build
 pnpm new-post     # node scripts/new-post.js（新建博客文章脚手架）
 ```
 
-- **包管理器**：仅支持 `pnpm` 9.14.4，`npm`/`yarn` 被 preinstall hook 拦截。
-- **格式化/检查**：Biome 2.2.5，不是 ESLint/Prettier。`.svelte`/`.astro`/`.vue` 文件关闭了 `useConst`、`useImportType`、`noUnusedVariables`、`noUnusedImports`（模板中误报过多）。
-- **CI 检查**：每次 push/PR 自动执行 `biome ci ./src` + `pnpm check` + `pnpm build`。
+- **包管理器**：仅支持 `pnpm` 9.14.4，`npm`/`yarn` 被 preinstall hook 拦截。CI 使用 `pnpm install --frozen-lockfile`，因此 `package.json` 与 `pnpm-lock.yaml` 必须同步提交。
+- **格式化/检查**：Biome，不是 ESLint/Prettier。CI（`biome.yml`）通过 `setup-biome` 固定使用 **2.2.5**，本地 devDependency 为 `@biomejs/biome` 2.3.12——改动需在两个版本下都通过。`.svelte`/`.astro`/`.vue` 文件关闭了 `useConst`、`useImportType`、`noUnusedVariables`、`noUnusedImports`（模板中误报过多）。
+- **CI 检查**：每次 push/PR 运行 `biome ci ./src`（2.2.5）与 Node 22/23 矩阵的 `pnpm astro check` + `pnpm astro build`；push `main` 时由 `withastro/action@v3`（Node 20）构建并部署。
 
 ---
 
@@ -92,7 +93,7 @@ hanhj1145.github.io/
 | 页面过渡 | [Swup](https://swup.js.org) | 通过 `@swup/astro` |
 | 数学公式 | KaTeX | 0.16.23 |
 | 图标 | Iconify (Font Awesome 6 + Material Symbols) | |
-| 格式化/检查 | [Biome](https://biomejs.dev) | 2.2.5 |
+| 格式化/检查 | [Biome](https://biomejs.dev) | 2.2.5（CI）/ 2.3.12（本地） |
 | 部署 | GitHub Pages + `withastro/action` | |
 | 包管理器 | pnpm | 9.14.4 |
 
@@ -277,9 +278,17 @@ Markdown 源
 
 | Workflow | 触发时机 | 操作 |
 |----------|---------|------|
-| `deploy.yml` | push main | `withastro/action@v3` 构建 + GitHub Pages 部署 |
-| `build.yml` | push/PR main | Node 22/23 矩阵：`pnpm astro check` + `pnpm astro build` |
-| `biome.yml` | push/PR main | Biome CI 代码风格检查 |
+| `deploy.yml` | push main | `withastro/action@v3`（Node 20）执行 `pnpm build`，部署到 GitHub Pages |
+| `build.yml` | push/PR main | Node 22/23 矩阵：`pnpm install --frozen-lockfile` → `pnpm astro check` → `pnpm astro build` |
+| `biome.yml` | push/PR main | `setup-biome@2.5.0`（version 2.2.5）执行 `biome ci ./src --reporter=github` |
+
+**CI 关键约束（本地自检必读）：**
+
+- **行尾 LF**：CI 在 Linux 上检出的是 LF，仓库约定 LF，Biome 也按 LF 校验。提交前确保文本文件为 LF 行尾。
+- **锁文件同步**：`build.yml` 使用 `--frozen-lockfile`，`package.json` 与 `pnpm-lock.yaml` 必须一起提交，否则安装阶段直接失败。
+- **新增文件必须 `git add`**：新增组件/页面/静态资源若漏提交，`astro build` 会报模块找不到。
+- **Node 引擎**：`astro@5.13.10` 要求 `18.20.8 || ^20.3.0 || >=22.0.0`，`sharp@0.34.4` 要求 `^18.17.0 || ^20.3.0 || >=21.0.0`；CI 使用的 Node 20/22/23 均满足。
+- **本地复现**：`pnpm verify`；如需精确对齐 CI 的 Biome 版本，用 `pnpm dlx @biomejs/biome@2.2.5 ci ./src`。
 
 ---
 
@@ -347,15 +356,15 @@ i18nKey.ts (枚举) → translation.ts (分发器) → languages/{en,zh_CN,zh_TW
 ### 提交前检查清单
 
 ```bash
-pnpm format        # Biome 格式化（CI 会检查，必须执行）
-pnpm lint          # Biome 代码风格（与 format 配合）
-pnpm check         # Astro 类型 + 模板检查
-pnpm build         # 完整构建验证（产出 dist/ + Pagefind 索引）
+pnpm format                                 # 需要时先自动格式化：biome format --write ./src
+pnpm verify                                 # 一键复现 CI：biome ci ./src && pnpm check && pnpm build
+pnpm dlx @biomejs/biome@2.2.5 ci ./src      # 需要时精确对齐 CI 的 Biome 版本
 ```
 
-1. `git status` — 确认只包含预期文件
+1. `git status` — 确认只包含预期文件；**新增文件必须先 `git add`**
 2. `git diff --staged` — 审查变更内容
-3. 不要提交 secrets、大文件（>1MB）、`dist/`、`node_modules/`
+3. 确认文本文件为 **LF** 行尾（CI 在 Linux 上按 LF 校验）
+4. 不要提交 secrets、大文件（>1MB）、`dist/`、`node_modules/`
 
 ---
 

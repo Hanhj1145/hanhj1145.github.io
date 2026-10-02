@@ -102,3 +102,25 @@ export type BlogPostData = {
 export type ExpressiveCodeConfig = {
 	theme: string;
 };
+
+export type GiscusConfig = {
+	/** 是否启用评论（填好 repoId / categoryId 后改为 true） */
+	enable: boolean;
+	/** GitHub 仓库，格式 owner/repo */
+	repo: string;
+	/** 仓库 ID，在 https://giscus.app 获取 */
+	repoId: string;
+	/** Discussion 分类名称，例如 Announcements */
+	category: string;
+	/** 分类 ID，在 https://giscus.app 获取 */
+	categoryId: string;
+	mapping: "pathname" | "url" | "title" | "og:title" | "specific" | "number";
+	/** 仅加载标题完全匹配的 Discussion */
+	strict: boolean;
+	reactionsEnabled: boolean;
+	emitMetadata: boolean;
+	inputPosition: "top" | "bottom";
+	/** giscus 界面语言，例如 zh-CN */
+	lang: string;
+	loading: "lazy" | "eager";
+};
